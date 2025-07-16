@@ -1,11 +1,25 @@
-from typing import Optional
+from typing import Optional, Annotated
 
-from fastapi import  FastAPI
+from fastapi import FastAPI
 from fastapi.params import Depends
-from pydantic import  BaseModel
-from sqlalchemy.sql.annotation import Annotated
 
-app = FastAPI()
+from pydantic import  BaseModel
+
+from database import create_tables, delete_tables, engine, Model
+from contextlib import asynccontextmanager
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    await delete_tables()
+    print("База очищена")
+    await create_tables()
+    print("База готова к работе")
+    yield
+    print("Выключение")
+
+
+app = FastAPI(lifespan = lifespan)
 
 
 class STaskAdd(BaseModel):
