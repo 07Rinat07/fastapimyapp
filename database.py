@@ -3,6 +3,9 @@ from typing import Optional
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from sqlalchemy.orm import  DeclarativeBase, Mapped, mapped_column
 
+from datetime import datetime
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+
 engine =  create_async_engine(
     "sqlite+aiosqlite:///tasks.db"
 )
@@ -25,10 +28,9 @@ async def delete_tables():
 
 
 class TaskOrm(Model):
-    __tablename__ = "tasks"
-
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str]
-    description: Mapped[Optional[str]]
+   __tablename__ = "tasks"
+   id: Mapped[int] = mapped_column(primary_key=True)
+   name: Mapped[str]
+   description: Mapped[str | None]
 
 
