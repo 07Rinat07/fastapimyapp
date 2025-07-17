@@ -21,3 +21,7 @@ class TaskRepository:
            task_models = result.scalars().all()
            tasks = [STask.model_validate(task_model) for task_model in task_models]
            return tasks
+
+   @classmethod
+   async def find_all(cls):
+       pass
